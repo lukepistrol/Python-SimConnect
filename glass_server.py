@@ -374,7 +374,18 @@ def get_datapoint_endpoint(datapoint_name):
 	if isinstance(output, bytes):
 		output = output.decode('ascii')
 
-	return jsonify(output)
+	if output is not None:
+		statusJson = {"status": "success", "value": output}
+	else:
+		statusJson = {"status": "error", "message": "Error with request: %s" % (datapoint_name)}
+	return jsonify(statusJson)
+
+
+@app.route('/datapoints/get', methods=["GET"])
+def get_datapoints_endpoint():
+
+	list = aq.list()
+	return jsonify(list)
 
 
 # This function actually does the work of setting an individual datapoint
@@ -409,7 +420,12 @@ def set_datapoint_endpoint(datapoint_name):
 
 	status = set_datapoint (datapoint_name, index, value_to_use)
 
-	return jsonify(status)
+	if status == "success":
+		statusJson = {"status": "success"}
+	else:
+		statusJson = {"status": "error", "message": status}
+
+	return jsonify(statusJson)
 
 
 # This function actually does the work of triggering an event
@@ -438,7 +454,18 @@ def trigger_event_endpoint(event_name):
 
 	status = trigger_event(event_name, value_to_use)
 
-	return jsonify(status)
+	if status == "success":
+		statusJson = {"status": "success"}
+	else:
+		statusJson = {"status": "error", "message": status}
+
+	return jsonify(statusJson)
+
+@app.route('/events/get', methods=["GET"])
+def get_events_endpoint():
+
+	list = ae.list()
+	return jsonify(list)
 
 
 @app.route('/custom_emergency/<emergency_type>', methods=["GET", "POST"])
