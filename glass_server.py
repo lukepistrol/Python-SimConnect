@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from SimConnect import *
 import random
+import time
 
 #
 # glass_server.py is an example web app which demonstrates how data can be read and set in the simulator
@@ -23,7 +24,14 @@ app = Flask(__name__)
 # SIMCONNECTION RELATED STARTUPS
 
 # Create simconnection
-sm = SimConnect()
+sm: SimConnect = None
+while sm == None:
+	try:
+		sm = SimConnect()
+	except:
+		print("No Sim Running, waiting... (Press CTRL+C to exit)")
+		time.sleep(10)
+	
 ae = AircraftEvents(sm)
 aq = AircraftRequests(sm, _time=10)
 
