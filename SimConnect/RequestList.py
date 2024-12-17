@@ -178,7 +178,7 @@ class AircraftRequests():
 		request = self.find(key)
 		if request is None:
 			return None
-		return request.value
+		return request
 
 	def set(self, key, _value):
 		request = self.find(key)
@@ -186,6 +186,17 @@ class AircraftRequests():
 			return False
 		request.value = _value
 		return True
+
+	def getAll(self):
+		keys = []
+		for entry in self.list:
+			for name in entry.list:
+				item = self.find(name)
+				unit = item.definitions[0][1].decode('UTF-8')
+				keys.append({"name": name, "description": item.description, "unit": unit, "settable": item.settable})
+		
+		return keys
+
 
 	def __init__(self, _sm, _time=10, _attemps=10):
 		self.sm = _sm
@@ -495,9 +506,9 @@ class AircraftRequests():
 			"OVERSPEED_WARNING": ["Overspeed warning state", b'OVERSPEED WARNING', b'Bool', 'N'],
 			"BARBER_POLE_MACH": ["Mach associated with maximum airspeed", b'BARBER POLE MACH', b'Mach', 'N'],
 			"INDICATED_ALTITUDE": ["Altimeter indication", b'INDICATED ALTITUDE', b'Feet', 'Y'],
-			"KOHLSMAN_SETTING_MB:index": ["Altimeter setting", b'KOHLSMAN SETTING MB', b'Millibars', 'Y'],
-			"KOHLSMAN_SETTING_HG:index": ["Altimeter setting", b'KOHLSMAN SETTING HG', b'inHg', 'Y'],
-			"KOHLSMAN_SETTING_STD:index":["Default altimeter setting", b'KOHLSMAN SETTING STD', b'Bool', 'Y'],
+			"KOHLSMAN_SETTING_MB:index": ["Altimeter setting", b'KOHLSMAN SETTING MB', b'Millibars', 'N'],
+			"KOHLSMAN_SETTING_HG:index": ["Altimeter setting", b'KOHLSMAN SETTING HG', b'inHg', 'N'],
+			"KOHLSMAN_SETTING_STD:index":["Default altimeter setting", b'KOHLSMAN SETTING STD', b'Bool', 'N'],
 			"ATTITUDE_INDICATOR_PITCH_DEGREES": ["AI pitch indication", b'ATTITUDE INDICATOR PITCH DEGREES', b'Radians', 'N'],
 			"ATTITUDE_INDICATOR_BANK_DEGREES": ["AI bank indication", b'ATTITUDE INDICATOR BANK DEGREES', b'Radians', 'N'],
 			"ATTITUDE_BARS_POSITION": ["AI reference pitch reference bars", b'ATTITUDE BARS POSITION', b'Percent Over 100', 'N'],

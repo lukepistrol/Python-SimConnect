@@ -89,6 +89,13 @@ class AircraftEvents():
 				if key == test[0].decode():
 					return getattr(clas, key)
 		return None
+	
+	def getAll(self):
+		keys = []
+		for entry in self.list:
+			for item in entry.list:
+				keys.append({"name": item[0].decode('UTF-8'), "description": item[1]})
+		return keys
 
 	class __Engine(EventHelper):
 		list = [
