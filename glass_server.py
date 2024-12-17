@@ -30,10 +30,10 @@ aq = AircraftRequests(sm, _time=10)
 # Create request holders
 # These are groups of datapoints which it is convenient to call as a group because they fulfill a specific function
 request_location = [
-	'ALTITUDE',
-	'LATITUDE',
-	'LONGITUDE',
-	'KOHLSMAN',
+	'PLANE_ALTITUDE',
+	'PLANE_LATITUDE',
+	'PLANE_LONGITUDE',
+	'KOHLSMAN_SETTING_HG:0',
 ]
 
 request_airspeed = [
